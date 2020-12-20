@@ -11,37 +11,34 @@ namespace LogComberWPF.Models
     public record W3CRecord
     {
         public string LogFilename { get; init; }
-
-        [Display(Name ="Event Time")]
-        public DateTime EventTime { get; init; }
-
-        [Display(Name = "Service Name")]
+        public DateTime EventTimeUTC { get; init; }
+        public DateTime EventTimeLocal
+        {
+            get
+            {
+                return EventTimeUTC.ToLocalTime();
+            }
+        }
         public string S_SiteName { get; init; }
-
-        [Display(Name ="Server Name")]
         public string S_ComputerName { get; init; }
-
-        [Display(Name = "Server IP")]
         public string S_Ip { get; init; }
-
-        [Display(Name ="Method")]
         public string CS_Method { get; init; }
-
-        [Display(Name ="URI Stem")]
         public string CS_URI_Stem { get; init; }
-
-        [Display(Name = "URI Query")]
         public string CS_URI_Query { get; init; }
-
-        [Display(Name = "Server Port")]
         public string S_Port { get; init; }
-
-        [Display(Name ="Http Status")]
-        public string SC_Status { get; init; }
-
-        [Display(Name = "Protocol Version")]
+        public string CS_Username { get; init; }
+        public string C_IP { get; set; }
         public string CS_Version { get; init; }
-
-
+        public string CS_UserAgent { get; init; }
+        public string CS_Cookie { get; init; }
+        public string CS_Referrer { get; init; }
+        public string CS_Host { get; init; }
+        public string SC_Status { get; init; }
+        public string SC_SubStatus { get; init; }
+        public string SC_Win32_Status { get; init; }
+        public long SC_Bytes { get; init; }
+        public long CS_Bytes { get; init; }
+        public int TimeTaken { get; init; }
+        public string StreamId { get; init; }
     }
 }

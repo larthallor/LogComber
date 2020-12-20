@@ -72,7 +72,7 @@ namespace LogComberWPF.ViewModels
                 {
                     //17:42:15 172.16.255.255 GET /default.htm 200 HTTP/1.0 
                     LogFilename = "File1.log",
-                    EventTime = new DateTime(2020,12,19,17,42,15,0,DateTimeKind.Utc),
+                    EventTimeUTC = new DateTime(2020,12,19,17,42,15,0,DateTimeKind.Utc),
                     S_Ip = "172.16.255.255",
                     CS_Method = "GET",
                     CS_URI_Stem = "/default.htm",
@@ -90,7 +90,7 @@ namespace LogComberWPF.ViewModels
                 {
                     //17:42:15 172.16.255.255 GET /default.htm 200 HTTP/1.0
                     LogFilename = "File1.log",
-                    EventTime = new DateTime(2020, 12, 19, 17, 42, 16, 0, DateTimeKind.Utc),
+                    EventTimeUTC = new DateTime(2020, 12, 19, 17, 42, 16, 0, DateTimeKind.Utc),
                     S_Ip = "172.16.255.255",
                     CS_Method = "GET",
                     CS_URI_Stem = "/images/flower.jpg",
@@ -106,7 +106,7 @@ namespace LogComberWPF.ViewModels
                 {
                    //17:42:15 172.16.255.255 GET /default.htm 200 HTTP/1.0
                    LogFilename = "File2.log",
-                    EventTime = new DateTime(2020, 12, 19, 17, 42, 17, 0, DateTimeKind.Utc),
+                    EventTimeUTC = new DateTime(2020, 12, 19, 17, 42, 17, 0, DateTimeKind.Utc),
                     S_Ip = "172.16.255.255",
                     CS_Method = "GET",
                     CS_URI_Stem = "/EmployeeDetails",

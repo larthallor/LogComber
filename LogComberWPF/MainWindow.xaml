@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:LogComberWPF"
         xmlns:vm="clr-namespace:LogComberWPF.ViewModels"
         mc:Ignorable="d"
-        Title="Log Comber" Height="450" Width="800"
+        Title="IIS W3C Log Comber" Height="450" Width="800"
         >
     <Window.DataContext>
         <vm:MainWindowViewModel x:Name="ViewModel" />
@@ -68,16 +68,32 @@
                 >
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Logfile" Binding="{Binding LogFilename}"/>
-                        <DataGridTextColumn Header="Event Time (UTC)" Binding="{Binding EventTime}"/>
-                        <DataGridTextColumn Header="Server IP" Binding="{Binding S_Ip}"/>
-                        <DataGridTextColumn Header="Server Name" Binding="{Binding S_ComputerName}" />
-                        <DataGridTextColumn Header="Server Port" Binding="{Binding S_Port}" />
+                        <DataGridTextColumn Header="Event Time (UTC)" Binding="{Binding EventTimeUTC}"/>
+                        <DataGridTextColumn Header="Event Time (Local)" Binding="{Binding EventTimeLocal}"/>
                         <DataGridTextColumn Header="Server Site" Binding="{Binding S_SiteName}" />
+                        <DataGridTextColumn Header="Server Name" Binding="{Binding S_ComputerName}" />
+                        <DataGridTextColumn Header="Server IP" Binding="{Binding S_Ip}"/>
                         <DataGridTextColumn Header="Method" Binding="{Binding CS_Method}"/>
                         <DataGridTextColumn Header="URI Stem" Binding="{Binding CS_URI_Stem}"/>
                         <DataGridTextColumn Header="URI Query" Binding="{Binding CS_URI_Query}" />
-                        <DataGridTextColumn Header="Status" Binding="{Binding SC_Status}"/>
+                        <DataGridTextColumn Header="Server Port" Binding="{Binding S_Port}" />
+                        <DataGridTextColumn Header="Username" Binding="{Binding CS_Username}"/>
+                        <DataGridTextColumn Header="Client IP" Binding="{Binding C_IP}" />
                         <DataGridTextColumn Header="Protocol" Binding="{Binding CS_Version}"/>
+                        <DataGridTextColumn Header="User Agent" Binding="{Binding CS_UserAgent}"/>
+                        <DataGridTextColumn Header="Cookie" Binding="{Binding CS_Cookie}" />
+                        <DataGridTextColumn Header="Referrer" Binding="{Binding CS_Referrer}" />
+                        <DataGridTextColumn Header="Host" Binding="{Binding CS_Host}" />
+                        <DataGridTextColumn Header="Status" Binding="{Binding SC_Status}"/>
+                        <DataGridTextColumn Header="Sub Status" Binding="{Binding SC_SubStatus}" />
+                        <DataGridTextColumn Header="Win32 Status" Binding="{Binding SC_Win32_Status}" />
+                        <DataGridTextColumn Header="Bytes Sent" Binding="{Binding SC_Bytes}" />
+                        <DataGridTextColumn Header="Bytes Rcvd" Binding="{Binding CS_Bytes}" />
+                        <DataGridTextColumn Header="MS Taken" Binding="{Binding TimeTaken}" />
+                        <DataGridTextColumn Header="Stream Id" Binding="{Binding StreamId}" />
+
+                        
+                        
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>
