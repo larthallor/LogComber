@@ -12,9 +12,9 @@ namespace LogComberWPF.ViewModels
 {
     public class MainWindowViewModel : INotifyPropertyChanged
     {
-        private ObservableCollection<DummyLogEntry> _dummyLogEntries = new();
+        private ObservableCollection<W3CRecord> _dummyLogEntries = new();
 
-        public ObservableCollection<DummyLogEntry> DummyLogEntries 
+        public ObservableCollection<W3CRecord> LogEntries 
         { 
             get
             {
@@ -28,35 +28,95 @@ namespace LogComberWPF.ViewModels
                     NotifyPropertyChanged();
                 }
             }
-        } 
+        }
+
+        private ObservableCollection<string> _filenames = new();
+        public ObservableCollection<string> Filenames
+        {
+            get
+            {
+                return _filenames;
+            }
+            set
+            {
+                if(_filenames != value)
+                {
+                    _filenames = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+
+        private string _fileDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+        public string FileDirectory
+        {
+            get
+            {
+                return _fileDirectory;
+            }
+            set
+            {
+                if(_fileDirectory != value)
+                {
+                    _fileDirectory = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
 
         public MainWindowViewModel()
         {
-            DummyLogEntries.Add(
-                new DummyLogEntry()
+            LogEntries.Add(
+                new W3CRecord()
                 {
                     //17:42:15 172.16.255.255 GET /default.htm 200 HTTP/1.0 
-                    FileSource = @"C:\Users\abennett\Downloads\U12346.log",
-                    Time = "17:42:15",
-                    CIP = "172.16.255.255",
-                    CsMethod = "GET",
-                    CsUriStem = "/default.htm",
-                    ScStatus = "200",
-                    CsVersion = "HTTP/1.0"
-                }
-                ) ;
+                    LogFilename = "File1.log",
+                    EventTime = new DateTime(2020,12,19,17,42,15,0,DateTimeKind.Utc),
+                    S_Ip = "172.16.255.255",
+                    CS_Method = "GET",
+                    CS_URI_Stem = "/default.htm",
+                    SC_Status = "200",
+                    CS_Version = "HTTP/1.0",
+                    S_ComputerName = "PATH-MISDEV",
+                    S_Port = "80",
+                    S_SiteName = "Birthdays",
 
-            DummyLogEntries.Add(
-                new DummyLogEntry()
+                }
+                ); ;
+
+            LogEntries.Add(
+                new W3CRecord()
                 {
                     //17:42:15 172.16.255.255 GET /default.htm 200 HTTP/1.0
-                    FileSource = @"C:\Users\abennett\Downloads\U12346.log",
-                    Time = "17:42:16",
-                    CIP = "172.16.255.255",
-                    CsMethod = "GET",
-                    CsUriStem = "/images/flower.jpg",
-                    ScStatus = "200",
-                    CsVersion = "HTTP/1.0"
+                    LogFilename = "File1.log",
+                    EventTime = new DateTime(2020, 12, 19, 17, 42, 16, 0, DateTimeKind.Utc),
+                    S_Ip = "172.16.255.255",
+                    CS_Method = "GET",
+                    CS_URI_Stem = "/images/flower.jpg",
+                    SC_Status = "200",
+                    CS_Version = "HTTP/1.0",
+                    S_ComputerName = "PATH-MISDEV",
+                    S_Port = "80",
+                    S_SiteName = "Birthdays",
+                }
+                );
+            LogEntries.Add(
+                new W3CRecord()
+                {
+                   //17:42:15 172.16.255.255 GET /default.htm 200 HTTP/1.0
+                   LogFilename = "File2.log",
+                    EventTime = new DateTime(2020, 12, 19, 17, 42, 17, 0, DateTimeKind.Utc),
+                    S_Ip = "172.16.255.255",
+                    CS_Method = "GET",
+                    CS_URI_Stem = "/EmployeeDetails",
+                    CS_URI_Query = "id=123456",
+                    SC_Status = "200",
+                    CS_Version = "HTTP/1.0",
+                    S_ComputerName = "PATH-MISDEV",
+                    S_Port = "80",
+                    S_SiteName = "Birthdays",
+                    
                 }
                 );
 

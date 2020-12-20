@@ -1,4 +1,5 @@
 ﻿using LogComberWPF.ViewModels;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +30,25 @@ namespace LogComberWPF
         private void ExitMenuItem_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown(0);
+        }
+
+        private void ChooseDirectoryMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new OpenFileDialog()
+            {
+                Multiselect = true,
+                InitialDirectory = ViewModel.FileDirectory
+            };
+            
+            if(dialog.ShowDialog(this).Value)
+            {
+                ViewModel.Filenames.Clear();
+                foreach (var filename in dialog.FileNames)
+                {
+                    ViewModel.FileDirectory = System.IO.Path.GetDirectoryName(filename);
+                    ViewModel.Filenames.Add(System.IO.Path.GetFileName(filename));
+                }
+            }
         }
     }
 }

@@ -13,10 +13,9 @@
     </Window.DataContext>
     <Grid>
         <DockPanel LastChildFill="True">
-
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="File">
-                <MenuItem Header="Open..."/>
+                <MenuItem Header="Choose Directory ..." Click="ChooseDirectoryMenuItem_Click" />
                 <Separator/>
                 <MenuItem Header="Exit" Click="ExitMenuItem_Click"/>
             </MenuItem>
@@ -31,7 +30,10 @@
         </Menu>
             <StatusBar DockPanel.Dock="Bottom">
                 <StatusBarItem>
-                    <Label>Test</Label>
+                    <StackPanel Orientation="Horizontal">
+                        <Label>Folder:</Label>
+                        <Label Content="{Binding FileDirectory}"/>
+                    </StackPanel>
                 </StatusBarItem>
             </StatusBar>
             <Grid>
@@ -40,30 +42,12 @@
                     <ColumnDefinition Width="3*"/>
                 </Grid.ColumnDefinitions>
 
-                <TreeView
-                    Name="DirectoryTreeView"
+                <ListView
+                    Name="FileListView"
                     Grid.Column="0"
-                    
+                    ItemsSource="{Binding Filenames}"
                     >
-                    <TreeViewItem Header="C:" IsExpanded="True">
-                        <TreeViewItem Header="Users" IsExpanded="True">
-                            <TreeViewItem Header="abennett" IsExpanded="True">
-                                <TreeViewItem Header="Downloads" IsExpanded="True">
-                                    <TreeViewItem>
-                                        <TreeViewItem.Header>
-                                            <CheckBox>U12346.log</CheckBox>
-                                        </TreeViewItem.Header>
-                                    </TreeViewItem>
-                                    <TreeViewItem>
-                                        <TreeViewItem.Header>
-                                            <CheckBox>U12347.log</CheckBox>
-                                        </TreeViewItem.Header>
-                                    </TreeViewItem>
-                                </TreeViewItem>
-                            </TreeViewItem>
-                        </TreeViewItem>
-                    </TreeViewItem>
-                </TreeView>
+                </ListView>
                 <GridSplitter
                     Grid.Column="0" 
                     ResizeDirection="Columns"
@@ -73,23 +57,28 @@
                 <DataGrid
                     Grid.Column="1"
                 Name="DummyLogEntriesDataGrid"
-                ItemsSource="{Binding DummyLogEntries}"
+                ItemsSource="{Binding LogEntries}"
                 CanUserReorderColumns="True"
                 CanUserResizeColumns="True"
                 CanUserSortColumns="True"
                 CanUserAddRows="False"
                 CanUserDeleteRows="False"
                 CanUserResizeRows="True"                
-                AutoGenerateColumns="True"
+                AutoGenerateColumns="False"
                 >
-                    <!--<DataGrid.Columns>
-                    <DataGridTextColumn Header="time"/>
-                    <DataGridTextColumn Header="c-ip"/>
-                    <DataGridTextColumn Header="cs-method"/>
-                    <DataGridTextColumn Header="cs-uri-stem"/>
-                    <DataGridTextColumn Header="sc-status"/>
-                    <DataGridTextColumn Header="cs-version"/>
-                </DataGrid.Columns>-->
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Logfile" Binding="{Binding LogFilename}"/>
+                        <DataGridTextColumn Header="Event Time (UTC)" Binding="{Binding EventTime}"/>
+                        <DataGridTextColumn Header="Server IP" Binding="{Binding S_Ip}"/>
+                        <DataGridTextColumn Header="Server Name" Binding="{Binding S_ComputerName}" />
+                        <DataGridTextColumn Header="Server Port" Binding="{Binding S_Port}" />
+                        <DataGridTextColumn Header="Server Site" Binding="{Binding S_SiteName}" />
+                        <DataGridTextColumn Header="Method" Binding="{Binding CS_Method}"/>
+                        <DataGridTextColumn Header="URI Stem" Binding="{Binding CS_URI_Stem}"/>
+                        <DataGridTextColumn Header="URI Query" Binding="{Binding CS_URI_Query}" />
+                        <DataGridTextColumn Header="Status" Binding="{Binding SC_Status}"/>
+                        <DataGridTextColumn Header="Protocol" Binding="{Binding CS_Version}"/>
+                    </DataGrid.Columns>
                 </DataGrid>
             </Grid>
         </DockPanel>
