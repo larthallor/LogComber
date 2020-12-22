@@ -1,7 +1,9 @@
 ﻿using LogComberWPF.ViewModels;
 using Microsoft.Win32;
+using Ookii.Dialogs.Wpf;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,27 +29,28 @@ namespace LogComberWPF
             InitializeComponent();
         }
 
+
+
         private void ExitMenuItem_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown(0);
         }
 
-        private void ChooseDirectoryMenuItem_Click(object sender, RoutedEventArgs e)
+        private async void FileOpenMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new OpenFileDialog()
+            var dialog = new VistaOpenFileDialog()
             {
-                Multiselect = true,
-                InitialDirectory = ViewModel.FileDirectory
+                CheckFileExists = true,
+                CheckPathExists = true,
+                Multiselect = false,
+                ReadOnlyChecked = true,
+                ValidateNames = true,
+                Title = "Choose Log File"
             };
             
             if(dialog.ShowDialog(this).Value)
             {
-                ViewModel.Filenames.Clear();
-                foreach (var filename in dialog.FileNames)
-                {
-                    ViewModel.FileDirectory = System.IO.Path.GetDirectoryName(filename);
-                    ViewModel.Filenames.Add(System.IO.Path.GetFileName(filename));
-                }
+                await ViewModel.NewFileSelectedAsync(dialog.FileName);
             }
         }
     }

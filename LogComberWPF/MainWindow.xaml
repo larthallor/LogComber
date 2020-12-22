@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:LogComberWPF"
         xmlns:vm="clr-namespace:LogComberWPF.ViewModels"
         mc:Ignorable="d"
-        Title="IIS W3C Log Comber" Height="450" Width="800"
+        Title="{Binding ElementName=ViewModel, Path=MainWindowTitle}"
+        Height="450" Width="800"
         >
     <Window.DataContext>
         <vm:MainWindowViewModel x:Name="ViewModel" />
@@ -15,7 +16,7 @@
         <DockPanel LastChildFill="True">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="File">
-                <MenuItem Header="Choose Directory ..." Click="ChooseDirectoryMenuItem_Click" />
+                <MenuItem Header="Open..." Click="FileOpenMenuItem_Click" />
                 <Separator/>
                 <MenuItem Header="Exit" Click="ExitMenuItem_Click"/>
             </MenuItem>
@@ -31,43 +32,26 @@
             <StatusBar DockPanel.Dock="Bottom">
                 <StatusBarItem>
                     <StackPanel Orientation="Horizontal">
-                        <Label>Folder:</Label>
-                        <Label Content="{Binding FileDirectory}"/>
+                        <Label Content="{Binding StatusDisplay}" />
                     </StackPanel>
                 </StatusBarItem>
             </StatusBar>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="3*"/>
-                </Grid.ColumnDefinitions>
-
-                <ListView
-                    Name="FileListView"
-                    Grid.Column="0"
-                    ItemsSource="{Binding Filenames}"
-                    >
-                </ListView>
-                <GridSplitter
-                    Grid.Column="0" 
-                    ResizeDirection="Columns"
-                    ResizeBehavior="CurrentAndNext"
-                    Width="5"
-                    />
                 <DataGrid
-                    Grid.Column="1"
-                Name="DummyLogEntriesDataGrid"
-                ItemsSource="{Binding LogEntries}"
-                CanUserReorderColumns="True"
-                CanUserResizeColumns="True"
-                CanUserSortColumns="True"
-                CanUserAddRows="False"
-                CanUserDeleteRows="False"
-                CanUserResizeRows="True"                
-                AutoGenerateColumns="False"
-                >
+                    Name="DummyLogEntriesDataGrid"
+                    ItemsSource="{Binding LogEntries}"
+                    CanUserReorderColumns="True"
+                    CanUserResizeColumns="True"
+                    CanUserSortColumns="True"
+                    CanUserAddRows="False"
+                    CanUserDeleteRows="False"
+                    CanUserResizeRows="True"                
+                    AutoGenerateColumns="False"
+                    SelectionUnit="CellOrRowHeader"
+                    IsReadOnly="True"
+                    RowHeaderWidth="20"
+                    >
+                    
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Logfile" Binding="{Binding LogFilename}"/>
                         <DataGridTextColumn Header="Event Time (UTC)" Binding="{Binding EventTimeUTC}"/>
                         <DataGridTextColumn Header="Event Time (Local)" Binding="{Binding EventTimeLocal}"/>
                         <DataGridTextColumn Header="Server Site" Binding="{Binding S_SiteName}" />
@@ -87,16 +71,12 @@
                         <DataGridTextColumn Header="Status" Binding="{Binding SC_Status}"/>
                         <DataGridTextColumn Header="Sub Status" Binding="{Binding SC_SubStatus}" />
                         <DataGridTextColumn Header="Win32 Status" Binding="{Binding SC_Win32_Status}" />
-                        <DataGridTextColumn Header="Bytes Sent" Binding="{Binding SC_Bytes}" />
-                        <DataGridTextColumn Header="Bytes Rcvd" Binding="{Binding CS_Bytes}" />
-                        <DataGridTextColumn Header="MS Taken" Binding="{Binding TimeTaken}" />
+                        <DataGridTextColumn Header="Bytes Sent" Binding="{Binding SC_Bytes, StringFormat=N0}" />
+                        <DataGridTextColumn Header="Bytes Rcvd" Binding="{Binding CS_Bytes, StringFormat=N0}" />
+                        <DataGridTextColumn Header="MS Taken" Binding="{Binding TimeTaken, StringFormat=N0}" />
                         <DataGridTextColumn Header="Stream Id" Binding="{Binding StreamId}" />
-
-                        
-                        
                     </DataGrid.Columns>
                 </DataGrid>
-            </Grid>
         </DockPanel>
     </Grid>
 </Window>

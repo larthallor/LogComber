@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -30,37 +31,104 @@ namespace LogComberWPF.ViewModels
             }
         }
 
-        private ObservableCollection<string> _filenames = new();
-        public ObservableCollection<string> Filenames
+        public string MainWindowTitle
         {
             get
             {
-                return _filenames;
+                string appTitle = "IIS W3C Log Comber";
+                if (string.IsNullOrEmpty(Filename))
+                {
+                    return appTitle;
+                }
+                return appTitle + " - " + Path.GetFileName(Filename);
+            }
+        }
+
+        private long? _FileSizeBytes;
+        public long? FileSizeBytes
+        {
+            get
+            {
+                return _FileSizeBytes;
             }
             set
             {
-                if(_filenames != value)
+                if(_FileSizeBytes != value)
                 {
-                    _filenames = value;
+                    _FileSizeBytes = value;
                     NotifyPropertyChanged();
+                    NotifyPropertyChanged(nameof(StatusDisplay));
                 }
             }
         }
 
-
-        private string _fileDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-        public string FileDirectory
+        private long? _FileSizeLines;
+        public long? FileSizeLines
         {
             get
             {
-                return _fileDirectory;
+                return _FileSizeLines;
             }
             set
             {
-                if(_fileDirectory != value)
+                if(_FileSizeLines != value)
                 {
-                    _fileDirectory = value;
+                    _FileSizeLines = value;
                     NotifyPropertyChanged();
+                    NotifyPropertyChanged(nameof(StatusDisplay));
+                }
+            }
+        }
+
+        public string StatusDisplay
+        {
+            get
+            {
+                if(string.IsNullOrEmpty(Filename))
+                {
+                    return "";
+                }
+                return $"{FileSizeBytes:N0} bytes in {FileSizeLines:N0} lines.";
+            }
+        }
+
+
+        internal async Task NewFileSelectedAsync(string fileName)
+        {
+            Filename = fileName;
+
+            FileSizeBytes = new FileInfo(fileName).Length;
+            var contents = await File.ReadAllLinesAsync(fileName);
+            FileSizeLines = contents.Length;
+            LogEntries.Clear();
+            foreach(var line in contents)
+            {
+                await Task.Yield();
+                LogEntries.Add(
+                    new W3CRecord()
+                    {
+                        LogFilename = fileName,
+                        CS_Bytes = line.Length,
+                        CS_Cookie = line.Substring(0,Math.Min(20, line.Length))
+                    }
+                    );
+            }
+        }
+
+        private string _filename;
+        public string Filename
+        {
+            get
+            {
+                return _filename;
+            }
+            set
+            {
+                if(_filename != value)
+                {
+                    _filename = value;
+                    NotifyPropertyChanged();
+                    NotifyPropertyChanged(nameof(MainWindowTitle));
                 }
             }
         }
@@ -121,6 +189,7 @@ namespace LogComberWPF.ViewModels
                 );
 
         }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")

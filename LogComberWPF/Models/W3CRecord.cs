@@ -11,12 +11,12 @@ namespace LogComberWPF.Models
     public record W3CRecord
     {
         public string LogFilename { get; init; }
-        public DateTime EventTimeUTC { get; init; }
-        public DateTime EventTimeLocal
+        public DateTime? EventTimeUTC { get; init; }
+        public DateTime? EventTimeLocal
         {
             get
             {
-                return EventTimeUTC.ToLocalTime();
+                return EventTimeUTC?.ToLocalTime();
             }
         }
         public string S_SiteName { get; init; }
