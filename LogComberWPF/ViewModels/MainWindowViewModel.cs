@@ -1,4 +1,5 @@
 ﻿using LogComberWPF.Models;
+using LogComberWPF.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -98,20 +99,17 @@ namespace LogComberWPF.ViewModels
             Filename = fileName;
 
             FileSizeBytes = new FileInfo(fileName).Length;
-            var contents = await File.ReadAllLinesAsync(fileName);
-            FileSizeLines = contents.Length;
+
+            var parser = new W3CLogParser();
+
             LogEntries.Clear();
-            foreach(var line in contents)
+            FileSizeLines = 0L;
+            await Task.Yield();
+
+            await foreach(var record in parser.GetRecordsAsync(fileName))
             {
-                await Task.Yield();
-                LogEntries.Add(
-                    new W3CRecord()
-                    {
-                        LogFilename = fileName,
-                        CS_Bytes = line.Length,
-                        CS_Cookie = line.Substring(0,Math.Min(20, line.Length))
-                    }
-                    );
+                FileSizeLines++;
+                LogEntries.Add(record);
             }
         }
 

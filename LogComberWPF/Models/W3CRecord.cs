@@ -36,9 +36,9 @@ namespace LogComberWPF.Models
         public string SC_Status { get; init; }
         public string SC_SubStatus { get; init; }
         public string SC_Win32_Status { get; init; }
-        public long SC_Bytes { get; init; }
-        public long CS_Bytes { get; init; }
-        public int TimeTaken { get; init; }
+        public long? SC_Bytes { get; init; }
+        public long? CS_Bytes { get; init; }
+        public int? TimeTaken { get; init; }
         public string StreamId { get; init; }
     }
 }
