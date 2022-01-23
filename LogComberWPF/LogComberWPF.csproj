@@ -9,4 +9,13 @@
     <AssemblyName>LogComber</AssemblyName>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\" />
+    <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\W3CLogFileLibrary\W3CLogFileLibrary.csproj" />
+  </ItemGroup>
+
 </Project>

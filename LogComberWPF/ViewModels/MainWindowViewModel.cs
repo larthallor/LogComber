@@ -1,11 +1,10 @@
-﻿using LogComberWPF.Models;
-using LogComberWPF.Services;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using W3CLogFileLibrary;
 
 namespace LogComberWPF.ViewModels;
 
@@ -97,13 +96,11 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
         FileSizeBytes = new FileInfo(fileName).Length;
 
-        var parser = new W3CLogParser();
-
         LogEntries.Clear();
         FileSizeLines = 0L;
         await Task.Yield();
 
-        await foreach (var record in parser.GetRecordsAsync(fileName))
+        await foreach (var record in W3CLogParser.GetRecordsAsync(fileName))
         {
             FileSizeLines++;
             LogEntries.Add(record);
