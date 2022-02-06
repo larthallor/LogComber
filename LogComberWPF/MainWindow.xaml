@@ -17,7 +17,8 @@
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="File">
                 <MenuItem Header="Open..." Click="FileOpenMenuItem_Click" />
-                <Separator/>
+                    <MenuItem Header="Reload" Click="ReloadMenuItem_Click"/>
+                    <Separator/>
                 <MenuItem Header="Exit" Click="ExitMenuItem_Click"/>
             </MenuItem>
             <MenuItem Header="Edit">

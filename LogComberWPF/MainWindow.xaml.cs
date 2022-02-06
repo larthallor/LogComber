@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace LogComberWPF;
@@ -32,7 +33,35 @@ public partial class MainWindow : Window
 
         if (dialog.ShowDialog(this).Value)
         {
-            await ViewModel.NewFileSelectedAsync(dialog.FileName);
+            DummyLogEntriesDataGrid.IsEnabled = false;
+            await Task.Yield();
+            try
+            {
+                await ViewModel.LoadFileAsync(dialog.FileName);
+
+            }
+            finally
+            {
+                DummyLogEntriesDataGrid.IsEnabled = true;
+            }
+        }
+    }
+
+    private async void ReloadMenuItem_Click(object sender, RoutedEventArgs args)
+    {
+        if(ViewModel.Filename != default)
+        {
+            DummyLogEntriesDataGrid.IsEnabled = false;
+            await Task.Yield();
+
+            try
+            {
+                await ViewModel.LoadFileAsync(ViewModel.Filename);
+            }
+            finally
+            {
+                DummyLogEntriesDataGrid.IsEnabled = true;
+            }
         }
     }
 }

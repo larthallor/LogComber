@@ -5,7 +5,21 @@ namespace W3CLogFileLibrary;
 public record W3CRecord
 {
     public string? LogFilename { get; init; }
-    public DateTime? EventTimeUTC { get; init; }
+    public DateTime? LoggingDateTime { get; set; }
+    public DateTime? EventTimeUTC 
+    {
+        get
+        {
+            if (TimeUTC == null)
+            {
+                return null;
+            }
+
+            DateTime? eventDateTime = DateUTC?.ToDateTime(TimeUTC.Value) 
+                ?? LoggingDateTime?.Date.AddTicks(TimeUTC.Value.Ticks);
+            return eventDateTime;
+        }
+    }
     public DateTime? EventTimeLocal
     {
         get
@@ -13,6 +27,9 @@ public record W3CRecord
             return EventTimeUTC?.ToLocalTime();
         }
     }
+
+    public DateOnly? DateUTC { get; init; }
+    public TimeOnly? TimeUTC { get; init; }
     public string? S_SiteName { get; init; }
     public string? S_ComputerName { get; init; }
     public string? S_Ip { get; init; }
@@ -32,6 +49,6 @@ public record W3CRecord
     public string? SC_Win32_Status { get; init; }
     public long? SC_Bytes { get; init; }
     public long? CS_Bytes { get; init; }
-    public int? TimeTaken { get; init; }
+    public decimal? TimeTaken { get; init; }
     public string? StreamId { get; init; }
 }

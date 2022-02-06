@@ -90,7 +90,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
     }
 
 
-    internal async Task NewFileSelectedAsync(string fileName)
+    internal async Task LoadFileAsync(string fileName)
     {
         Filename = fileName;
 
@@ -130,9 +130,10 @@ public class MainWindowViewModel : INotifyPropertyChanged
         LogEntries.Add(
             new W3CRecord()
             {
-                    //17:42:15 172.16.255.255 GET /default.htm 200 HTTP/1.0 
-                    LogFilename = "File1.log",
-                EventTimeUTC = new DateTime(2020, 12, 19, 17, 42, 15, 0, DateTimeKind.Utc),
+                //17:42:15 172.16.255.255 GET /default.htm 200 HTTP/1.0 
+                LogFilename = "File1.log",
+                DateUTC = new DateOnly(2020, 12, 19),
+                TimeUTC = new TimeOnly(17, 42, 15, 0),
                 S_Ip = "172.16.255.255",
                 CS_Method = "GET",
                 CS_URI_Stem = "/default.htm",
@@ -148,9 +149,10 @@ public class MainWindowViewModel : INotifyPropertyChanged
         LogEntries.Add(
             new W3CRecord()
             {
-                    //17:42:15 172.16.255.255 GET /default.htm 200 HTTP/1.0
-                    LogFilename = "File1.log",
-                EventTimeUTC = new DateTime(2020, 12, 19, 17, 42, 16, 0, DateTimeKind.Utc),
+                //17:42:15 172.16.255.255 GET /default.htm 200 HTTP/1.0
+                LogFilename = "File1.log",
+                DateUTC = new DateOnly(2020, 12, 19),
+                TimeUTC = new TimeOnly(17, 42, 16, 0),
                 S_Ip = "172.16.255.255",
                 CS_Method = "GET",
                 CS_URI_Stem = "/images/flower.jpg",
@@ -164,9 +166,10 @@ public class MainWindowViewModel : INotifyPropertyChanged
         LogEntries.Add(
             new W3CRecord()
             {
-                    //17:42:15 172.16.255.255 GET /default.htm 200 HTTP/1.0
-                    LogFilename = "File2.log",
-                EventTimeUTC = new DateTime(2020, 12, 19, 17, 42, 17, 0, DateTimeKind.Utc),
+                //17:42:15 172.16.255.255 GET /default.htm 200 HTTP/1.0
+                LogFilename = "File2.log",
+                DateUTC = new DateOnly(2020, 12, 19),
+                TimeUTC = new TimeOnly(17, 42, 17, 0),
                 S_Ip = "172.16.255.255",
                 CS_Method = "GET",
                 CS_URI_Stem = "/EmployeeDetails",
