@@ -100,7 +100,7 @@ public class W3CLogParser
             "cs-version" => record with { CS_Version = rawField },
             "cs(User-Agent)" => record with { CS_UserAgent = rawField },
             "cs(Cookie)" => record with { CS_Cookie = rawField },
-            "cs(Referrer)" => record with { CS_Referrer = rawField },
+            "cs(Referer)" => record with { CS_Referrer = rawField },
             "cs-host" => record with { CS_Host = rawField },
             "sc-status" => record with { SC_Status = rawField },
             "sc-substatus" => record with { SC_SubStatus = rawField },
