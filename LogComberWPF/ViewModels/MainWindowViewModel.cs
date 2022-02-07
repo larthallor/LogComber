@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
@@ -96,14 +97,36 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
         FileSizeBytes = new FileInfo(fileName).Length;
 
-        LogEntries.Clear();
+        //LogEntries.Clear();
         FileSizeLines = 0L;
         await Task.Yield();
+
+        List<W3CRecord> currentRecords = new();
 
         await foreach (var record in W3CLogParser.GetRecordsAsync(fileName))
         {
             FileSizeLines++;
-            LogEntries.Add(record);
+            currentRecords.Add(record);
+            if(!LogEntries.Contains(record))
+            {
+                LogEntries.Add(record);
+            }
+        }
+
+        List<W3CRecord> recordsToDelete = new();
+
+        foreach(var entry in LogEntries)
+        {
+            if(!currentRecords.Contains(entry))
+            {
+                recordsToDelete.Add(entry);
+            }
+        }
+
+        foreach(var recordToDelete in recordsToDelete)
+        {
+            LogEntries.Remove(recordToDelete);
+            await Task.Yield();
         }
     }
 
