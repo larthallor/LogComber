@@ -148,7 +148,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
         }
     }
 
-    public MainWindowViewModel()
+    private void AddTestData()
     {
         LogEntries.Add(
             new W3CRecord()
@@ -205,7 +205,11 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
             }
             );
+    }
 
+    public MainWindowViewModel()
+    {
+        //AddTestData();
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
