@@ -33,7 +33,7 @@ public partial class MainWindow : Window
 
         if (dialog.ShowDialog(this).Value)
         {
-            DummyLogEntriesDataGrid.IsEnabled = false;
+            //DummyLogEntriesDataGrid.IsEnabled = false;
             await Task.Yield();
             try
             {
@@ -51,7 +51,7 @@ public partial class MainWindow : Window
     {
         if(ViewModel.Filename != default)
         {
-            DummyLogEntriesDataGrid.IsEnabled = false;
+            //DummyLogEntriesDataGrid.IsEnabled = false;
             await Task.Yield();
 
             try

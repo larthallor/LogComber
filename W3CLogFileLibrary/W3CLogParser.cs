@@ -15,11 +15,12 @@ public class W3CLogParser
 
         using var sr = File.OpenText(filename);
         string? lineBuffer = null;
+        W3CBuffer buffer = new();
         while (!sr.EndOfStream)
         {
             lineBuffer = await sr.ReadLineAsync();
-            if (lineBuffer == null) {}
-            else if (lineBuffer.StartsWith("#Version:")) {}
+            if (lineBuffer == null) { }
+            else if (lineBuffer.StartsWith("#Version:")) { }
             else if (lineBuffer.StartsWith("#Date:"))
             {
                 defaultDate = ParseDateDirective(lineBuffer);
@@ -31,20 +32,20 @@ public class W3CLogParser
             else if (lineBuffer.StartsWith("#")) { }
             else
             {
-
                 // if we get here, this is data, not a directive.
                 if (fieldNames == null) { continue; } // If we don't have a fieldNames directive yet.
-                W3CRecord record = new() { LoggingDateTime = defaultDate, LogFilename = filename };
-                
+
+                buffer.Clear();
+                buffer.LoggingDateTime = defaultDate;
+                buffer.LogFilename = filename;
                 var fields = lineBuffer.Split(' ');
                 for (int i = 0; i < fields.Length; i++)
                 {
-                    record = SetData(fields[i], fieldNames[i], record);
+                    SetBufferField(fields[i], fieldNames[i], buffer);
                 }
-                yield return record;
+                yield return buffer.ToRecord;
             }
         }
-
         sr.Close();
     }
 
@@ -64,49 +65,42 @@ public class W3CLogParser
         string content = tokens[1].Split("//",2)[0].Trim(); // get rid of comments
         return DateTime.Parse(content);
     }
-
-    private static W3CRecord SetData(string rawField, string? rawFieldName, W3CRecord record)
+    private static void SetBufferField(string rawField, string? rawFieldName, W3CBuffer buffer)
     {
-        if(rawField == "-")
+        if (rawField == "-")
         {
-            return record;
+            return;
         }
 
-        return rawFieldName switch
+        switch(rawFieldName)
         {
-            "time" => record with
-            {
-
-                //EventTimeUTC = defaultDateTime.Add(TimeSpan.Parse(rawField))
-                TimeUTC = TimeOnly.Parse(rawField)
-            },
-            "date" => record with {DateUTC = DateOnly.Parse(rawField)},
-            "time-taken" => record with { TimeTaken = Decimal.Parse(rawField)},
-            "sc-bytes" => record with { SC_Bytes = Int32.Parse(rawField)},
-            "cs-bytes" => record with { CS_Bytes = Int32.Parse(rawField)},
-            "s-sitename" => record with { S_SiteName = rawField},
-            "s-computername" => record with { S_ComputerName = rawField},
-            "s-ip" => record with { S_Ip = rawField},
-            "cs-method" => record with { CS_Method = rawField },
-            "cs-uri-stem" => record with { CS_URI_Stem = rawField },
-            "cs-uri-query" => record with { CS_URI_Query = rawField },
-            "cs-uri" =>  record with {
-                CS_URI_Stem = rawField.Split('?', 2)[0],
-                CS_URI_Query = rawField.Split('?', 2).Length == 2 ? rawField.Split('?', 2)[1] : null,
-                },
-            "s-port" => record with { S_Port = rawField },
-            "cs-username" => record with { CS_Username = rawField },
-            "c-ip" => record with { C_IP = rawField },
-            "cs-version" => record with { CS_Version = rawField },
-            "cs(User-Agent)" => record with { CS_UserAgent = rawField },
-            "cs(Cookie)" => record with { CS_Cookie = rawField },
-            "cs(Referer)" => record with { CS_Referrer = rawField },
-            "cs-host" => record with { CS_Host = rawField },
-            "sc-status" => record with { SC_Status = rawField },
-            "sc-substatus" => record with { SC_SubStatus = rawField },
-            "sc-win32-status" => record with { SC_Win32_Status = rawField},
-            "streamid" => record with { StreamId = rawField },
-            _ => record,
+            case "time": buffer.TimeUTC = TimeOnly.Parse(rawField); break;
+            case "date": buffer.DateUTC = DateOnly.Parse(rawField); break;
+            case "time-taken": buffer.TimeTaken = Decimal.Parse(rawField); break;
+            case "sc-bytes": buffer.SC_Bytes = Int32.Parse(rawField); break;
+            case "cs-bytes" :  buffer.CS_Bytes = Int32.Parse(rawField) ; break;
+            case "s-sitename" :  buffer.S_SiteName = rawField ; break;
+            case "s-computername" :  buffer.S_ComputerName = rawField ; break;
+            case "s-ip" :  buffer.S_Ip = rawField ; break;
+            case "cs-method" :  buffer.CS_Method = rawField ; break;
+            case "cs-uri-stem" :  buffer.CS_URI_Stem = rawField ; break;
+            case "cs-uri-query" :  buffer.CS_URI_Query = rawField ; break;
+            case "cs-uri" :
+                buffer.CS_URI_Stem = rawField.Split('?', 2)[0];
+                buffer.CS_URI_Query = rawField.Split('?', 2).Length == 2 ? rawField.Split('?', 2)[1] : null;
+                break;
+            case "s-port" :  buffer.S_Port = rawField ; break;
+            case "cs-username" :  buffer.CS_Username = rawField ; break;
+            case "c-ip" :  buffer.C_IP = rawField ; break;
+            case "cs-version" :  buffer.CS_Version = rawField ; break;
+            case "cs(User-Agent)" :  buffer.CS_UserAgent = rawField ; break;
+            case "cs(Cookie)" :  buffer.CS_Cookie = rawField ; break;
+            case "cs(Referer)" :  buffer.CS_Referrer = rawField ; break;
+            case "cs-host" :  buffer.CS_Host = rawField ; break;
+            case "sc-status" :  buffer.SC_Status = rawField ; break;
+            case "sc-substatus" :  buffer.SC_SubStatus = rawField ; break;
+            case "sc-win32-status" :  buffer.SC_Win32_Status = rawField ; break;
+            case "streamid" :  buffer.StreamId = rawField ; break;
         };
     }
 }

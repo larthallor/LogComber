@@ -60,8 +60,8 @@ public class MainWindowViewModel : INotifyPropertyChanged
         }
     }
 
-    private long? _FileSizeLines;
-    public long? FileSizeLines
+    private long _FileSizeLines;
+    public long FileSizeLines
     {
         get
         {
@@ -93,28 +93,37 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
     internal async Task LoadFileAsync(string fileName)
     {
+        if(Filename != fileName)
+        {
+            LogEntries.Clear();
+            FileSizeLines = 0L;
+        }
         Filename = fileName;
 
         FileSizeBytes = new FileInfo(fileName).Length;
 
         //LogEntries.Clear();
-        FileSizeLines = 0L;
+        //FileSizeLines = 0L;
         await Task.Yield();
 
         List<W3CRecord> currentRecords = new();
 
         await foreach (var record in W3CLogParser.GetRecordsAsync(fileName))
         {
-            FileSizeLines++;
+            
             currentRecords.Add(record);
             if(!LogEntries.Contains(record))
             {
+                FileSizeLines++;
                 LogEntries.Add(record);
             }
         }
 
         List<W3CRecord> recordsToDelete = new();
 
+        // Can't delete in this loop because it would modify
+        //   the thing we are enumerating. Store items found
+        //   for deletion after we finish iterating LogEntries.
         foreach(var entry in LogEntries)
         {
             if(!currentRecords.Contains(entry))
@@ -123,8 +132,10 @@ public class MainWindowViewModel : INotifyPropertyChanged
             }
         }
 
+        // Now we can update LogEntries
         foreach(var recordToDelete in recordsToDelete)
         {
+            FileSizeLines--;
             LogEntries.Remove(recordToDelete);
             await Task.Yield();
         }
